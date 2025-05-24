@@ -1,0 +1,39 @@
+package com.zidio.zidioBackend.controller;
+
+import com.zidio.zidioBackend.entity.User;
+import com.zidio.zidioBackend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("api/auth")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody User user) {
+        try {
+            userService.signup(user.getFullName(), user.getEmail(), user.getPassword(), user.getRole());
+            return ResponseEntity.ok("User signed up successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Sign up failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+        User user = userService.login(email, password);
+        if (user != null) {
+            return ResponseEntity.ok("User logged in successfully");
+        } else {
+            return ResponseEntity.status(401).body("Invalid email or password");
+        }
+    }
+}
