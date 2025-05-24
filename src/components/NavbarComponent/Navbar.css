@@ -1,0 +1,100 @@
+/* Reset basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar-component {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+}
+
+.navbar-brand a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1a237e;
+  text-decoration: none;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.navbar-links li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar-links li a:hover,
+.navbar-links li a.active {
+  color: blue;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Login button */
+.login-btn {
+  background-color: transparent;
+  color: #ff7043;
+  border: 1.5px solid #ff7043;
+}
+
+.login-btn:hover {
+  background-color: #ff7043;
+  color: #fff;
+}
+
+/* Sign Up button */
+.signup-btn {
+  background-color: #ffab91;
+  color: #fff;
+  border: 1.5px solid #ff7043;
+}
+
+.signup-btn:hover {
+  background-color: #ff7043;
+}
+
+/* Login button */
+.logout-btn {
+  background-color: transparent;
+  color: #ff7043;
+  border: 1.5px solid #ff7043;
+}
+
+.logout-btn:hover {
+  background-color: #ff7043;
+  color: #fff;
+}

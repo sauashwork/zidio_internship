@@ -1,0 +1,199 @@
+/* StudentDashboard.css */
+
+.dashboard-wrapper {
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f6f1;
+  color: #3e2c1e;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.filter-section {
+  width: 220px;
+  padding: 20px;
+  background-color: #f1e9dd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.filter-section h3 {
+  margin-bottom: 10px;
+}
+
+.filter-btn {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #c1a276;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background-color: #e4d4c1;
+}
+
+.dashboard-main {
+  flex: 1;
+  margin-left: 30px;
+}
+
+.features {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.features-grid {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  flex: 1;
+  padding: 15px;
+  background-color: #fff7f0;
+  border: 1px solid #d8bfa3;
+  border-radius: 12px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: 500;
+}
+
+.job-listings h3 {
+  margin: 20px 0 10px;
+}
+
+.job-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.job-card {
+  background-color: #fff;
+  border: 1px solid #d1b295;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+}
+
+.type-tag {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background-color: #f5e1c8;
+  color: #6c4a2e;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.load-more-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #d8bfa3;
+  border: none;
+  border-radius: 8px;
+  color: #3e2c1e;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.load-more-btn:hover {
+  background-color: #caa77e;
+}
+
+/* Center the Show More button */
+.show-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.profile-card, .resume-card, .status-card {
+  flex: 1;
+  min-width: 260px;
+  max-width: 350px;
+}
+
+.profile-photo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.profile-photo-label {
+  cursor: pointer;
+}
+
+.profile-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d8bfa3;
+}
+
+.profile-photo-placeholder {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #f5e1c8;
+  color: #a08b6f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border: 2px dashed #d8bfa3;
+}
+
+.profile-input {
+  width: 100%;
+  margin-bottom: 7px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d8bfa3;
+  font-size: 14px;
+}
+
+.upload-btn {
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #f5e1c8;
+  color: #6c4a2e;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.resume-info {
+  font-size: 13px;
+  margin-top: 5px;
+  word-break: break-all;
+}
+
+.application-status-list {
+  list-style: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.application-status-list li {
+  margin-bottom: 6px;
+}
