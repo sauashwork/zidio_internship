@@ -38,10 +38,6 @@ function RecruiterDashboard() {
         "Internship 'Marketing Intern' deadline is tomorrow.",
         "You have 2 unread messages from applicants.",
     ]);
-    const [postedJobs, setPostedJobs] = useState([]);
-    const [postedInternships, setPostedInternships] = useState([]);
-    const [jobSearchResults, setJobSearchResults] = useState(null);
-    const [internshipSearchResults, setInternshipSearchResults] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -108,40 +104,42 @@ function RecruiterDashboard() {
     };
 
     const handleJobFormChange = (e) => {
-        const { name, value } = e.target;
-        setJobForm((prev) => ({ ...prev, [name]: value }));
+        const { name, value, files } = e.target;
+        if (name === "logo" && files && files[0]) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                setJobForm((prev) => ({ ...prev, logo: ev.target.result }));
+            };
+            reader.readAsDataURL(files[0]);
+        } else {
+            setJobForm((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
-    const handleJobFormSubmit = async (e) => {
+    const handleJobFormSubmit = (e) => {
         e.preventDefault();
         const newJob = {
+            id: Date.now(),
             company: jobForm.company,
             location: jobForm.location,
             details: jobForm.details.split(",").map((d) => d.trim()),
             logo: jobForm.logo || "/assets/work-img.png",
             title: jobForm.title,
-            type: postType, // "job" or "internship"
-            ctc: jobForm.ctc,
-            experience: jobForm.experience,
-            bookmarked: "false"
         };
-        try {
-            const res = await fetch("http://localhost:8080/api/jobs", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newJob)
-            });
-            if (res.ok) {
-                setNotifications((prev) => [
-                    `You posted a new ${postType}: ${jobForm.title}`,
-                    ...prev,
-                ]);
-                setShowPostForm(false);
-                fetchPostedJobs(); // Refresh posted jobs from backend
-            }
-        } catch (err) {
-            alert("Failed to post job/internship.");
+        if (postType === "job") {
+            setSavedJobs((prev) => [newJob, ...prev]);
+            setNotifications((prev) => [
+                `You posted a new job: ${jobForm.title}`,
+                ...prev,
+            ]);
+        } else {
+            setAppliedJobs((prev) => [newJob, ...prev]);
+            setNotifications((prev) => [
+                `You posted a new internship: ${jobForm.title}`,
+                ...prev,
+            ]);
         }
+        setShowPostForm(false);
     };
 
     // View Applications logic (mocked for demo)
@@ -166,112 +164,6 @@ function RecruiterDashboard() {
 
     // For demo: add a button to simulate an application (not for production)
     // In real app, applications would come from candidates
-
-    // Example function to call from your form's onSubmit
-    const handlePostJob = async (jobData) => {
-        const response = await fetch("http://localhost:8080/api/jobs", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(jobData),
-        });
-        if (response.ok) {
-            // Optionally refresh jobs list or show success
-        }
-    };
-
-    const fetchPostedJobs = async () => {
-        const res = await fetch("http://localhost:8080/api/jobs");
-        const data = await res.json();
-        setPostedJobs(data.filter(j => j.type === "job"));
-        setPostedInternships(data.filter(j => j.type === "internship"));
-    };
-
-    useEffect(() => {
-        fetchPostedJobs();
-    }, []);
-
-    useEffect(() => {
-        fetch("http://localhost:8080/api/jobs")
-            .then(res => res.json())
-            .then(data => {
-                const jobsWithBookmark = data.map(job => ({
-                    ...job,
-                    bookmarked: job.bookmarked === "true" || job.bookmarked === true
-                }));
-                setPostedJobs(jobsWithBookmark);
-            });
-    }, []);
-
-    // Example: Fetch jobs posted by the current recruiter
-    const recruiterId = profile.id; // Assuming profile.id is the recruiter ID
-    useEffect(() => {
-        fetch(`http://localhost:8080/api/jobs?recruiterId=${recruiterId}`)
-            .then(res => res.json())
-            .then(setPostedJobs);
-    }, [recruiterId]);
-
-    const [showSearchForm, setShowSearchForm] = useState(false);
-    const [searchFilters, setSearchFilters] = useState({
-        company: "",
-        location: "",
-        title: "",
-        type: "",
-        ctc: "",
-        experience: "",
-        details: "",
-        bookmarked: "",
-    });
-    const [searchResults, setSearchResults] = useState(null);
-    const handleSearchPostedJobClick = () => {
-        setShowSearchForm(true);
-        setSearchResults(null);
-        setSearchFilters({
-            company: "",
-            location: "",
-            title: "",
-            type: "",
-            ctc: "",
-            experience: "",
-            details: "",
-            bookmarked: "",
-        });
-    };
-    const handleSearchFilterChange=(e)=>{
-        const {name, value, type, checked}=e.target;
-        setSearchFilters((prev)=>({
-            ...prev,
-            [name]:type==="checkbox"?checked:value,
-        }));
-    };
-    const handleSearchFormSubmit=(e)=>{
-        e.preventDefault();
-        const {
-            company, location, title, type, ctc, experience, details, bookmarked
-        } = searchFilters;
-
-        // Filter jobs and internships separately
-        const filterFn = job => {
-            if (company && !job.company.toLowerCase().includes(company.toLowerCase())) return false;
-            if (location && !job.location.toLowerCase().includes(location.toLowerCase())) return false;
-            if (title && !job.title.toLowerCase().includes(title.toLowerCase())) return false;
-            if (type && job.type !== type) return false;
-            if (ctc && job.ctc && !job.ctc.toLowerCase().includes(ctc.toLowerCase())) return false;
-            if (experience && job.experience && !job.experience.toLowerCase().includes(experience.toLowerCase())) return false;
-            if (details) {
-                const searchDetails = details.split(",").map(d => d.trim().toLowerCase()).filter(Boolean);
-                if (!searchDetails.some(sd => (job.details || []).some(jd => jd.toLowerCase().includes(sd)))) return false;
-            }
-            if (bookmarked && String(job.bookmarked) !== "true") return false;
-            return true;
-        };
-
-        setJobSearchResults(postedJobs.filter(j => j.type === "job" && filterFn(j)));
-        setInternshipSearchResults(postedInternships.filter(j => j.type === "internship" && filterFn(j)));
-        setShowSearchForm(false);
-    };
-
-    // Add this derived value before your return statement:
-    const totalPostedCount = postedJobs.length + postedInternships.length;
 
     return (
         <div className="studentDash">
@@ -367,13 +259,10 @@ function RecruiterDashboard() {
                     <div className="bannerUp">
                         <div className="wel-banner">
                             <h3>Good Morning</h3>
-                            <p>
-                                You've posted <span>{totalPostedCount} jobs/internships</span> so far. Keep it up!
-                            </p>
+                            <p>You've posted <span>{savedJobs.length + appliedJobs.length} jobs/internships</span> today. Keep it up!</p>
                         </div>
                         <div className="post-jobs">
                             <button onClick={handlePostJobClick}>➕ Post a Job?</button>
-                            <button onClick={handleSearchPostedJobClick}>→ Search Jobs?</button>
                         </div>
                     </div>
                     <div className="bannerDown">
@@ -454,13 +343,13 @@ function RecruiterDashboard() {
                                 required
                             />
                             <span style={{ fontSize: "13px", color: "#888", marginTop: 2, marginBottom: 8, display: "block" }}>
-                                {jobForm.logo ? "Logo URL entered" : "Paste company logo URL"}
+                                {jobForm.logo ? "Logo selected" : "Company logo"}
                             </span>
                             <input
-                                type="text"
+                                type="file"
                                 name="logo"
-                                placeholder="Paste company logo URL"
-                                value={jobForm.logo}
+                                placeholder="Company logo"
+                                accept="image/*"
                                 onChange={handleJobFormChange}
                             />
                             <div style={{ marginTop: 8 }}>
@@ -475,7 +364,7 @@ function RecruiterDashboard() {
                     <div className="saved-jobs">
                         <h4>Posted Jobs</h4>
                         <div className="saved-cards">
-                            {(jobSearchResults !== null ? jobSearchResults : postedJobs.slice(0, savedVisible)).map((job, idx) => (
+                            {savedJobs.slice(0, savedVisible).map((job, idx) => (
                                 <div className="card" key={job.id}>
                                     <div className="c1">
                                         <div>
@@ -501,7 +390,7 @@ function RecruiterDashboard() {
                                 </div>
                             ))}
                         </div>
-                        {savedVisible < postedJobs.length && (
+                        {savedVisible < savedJobs.length && (
                             <div
                                 style={{ textAlign: "center", cursor: "pointer", marginTop: 8 }}
                                 onClick={() => setSavedVisible(v => v + 4)}
@@ -513,7 +402,7 @@ function RecruiterDashboard() {
                     <div className="applied-jobs">
                         <h4>Posted Internships</h4>
                         <div className="applied-cards">
-                            {(internshipSearchResults !== null ? internshipSearchResults : postedInternships.slice(0, appliedVisible)).map((job, idx) => (
+                            {appliedJobs.slice(0, appliedVisible).map((job, idx) => (
                                 <div className="card" key={job.id}>
                                     <div className="c1">
                                         <div>
@@ -539,7 +428,7 @@ function RecruiterDashboard() {
                                 </div>
                             ))}
                         </div>
-                        {appliedVisible < postedInternships.length && (
+                        {appliedVisible < appliedJobs.length && (
                             <div
                                 style={{ textAlign: "center", cursor: "pointer", marginTop: 8 }}
                                 onClick={() => setAppliedVisible(v => v + 4)}
@@ -577,115 +466,6 @@ function RecruiterDashboard() {
                     </div>
                 </div>
             )}
-
-            {showSearchForm && (
-                <div className="post-job-form-modal">
-                    <form className="post-job-form" onSubmit={handleSearchFormSubmit}>
-                        <h3>Search Posted Jobs/Internships</h3>
-                        <input
-                            type="text"
-                            name="company"
-                            placeholder="Company"
-                            value={searchFilters.company}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <input
-                            type="text"
-                            name="location"
-                            placeholder="Location"
-                            value={searchFilters.location}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <input
-                            type="text"
-                            name="title"
-                            placeholder="Title"
-                            value={searchFilters.title}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <select
-                            name="type"
-                            value={searchFilters.type}
-                            onChange={handleSearchFilterChange}
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                margin: "8px 0",
-                                borderRadius: "4px",
-                                border: "1px solid #ccc",
-                                fontSize: "15px"
-                            }}
-                        >
-                            <option value="">Any Type</option>
-                            <option value="job">Job</option>
-                            <option value="internship">Internship</option>
-                        </select>
-                        <input
-                            type="text"
-                            name="ctc"
-                            placeholder="CTC"
-                            value={searchFilters.ctc}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <input
-                            type="text"
-                            name="experience"
-                            placeholder="Experience"
-                            value={searchFilters.experience}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <input
-                            type="text"
-                            name="details"
-                            placeholder="Details (comma separated)"
-                            value={searchFilters.details}
-                            onChange={handleSearchFilterChange}
-                        />
-                        <label style={{ display: "block", marginTop: 8 }}>
-                            <input
-                                type="checkbox"
-                                name="bookmarked"
-                                checked={searchFilters.bookmarked}
-                                onChange={handleSearchFilterChange}
-                            />{" "}
-                            Bookmarked Only?
-                        </label>
-                        <div style={{ marginTop: 8 }}>
-                            <button type="submit" className="save-btn">Search</button>
-                            <button
-                                type="button"
-                                className="edit-btn"
-                                style={{ marginLeft: 8 }}
-                                onClick={() => setShowSearchForm(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                className="edit-btn"
-                                style={{ marginLeft: 8 }}
-                                onClick={() => {
-                                    setSearchFilters({
-                                        company: "",
-                                        location: "",
-                                        title: "",
-                                        type: "",
-                                        ctc: "",
-                                        experience: "",
-                                        details: "",
-                                        bookmarked: "",
-                                    });
-                                    setJobSearchResults(null);
-                                    setInternshipSearchResults(null);
-                                }}
-                            >
-                                Clear Filters
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
-
         </div>
     );
 }

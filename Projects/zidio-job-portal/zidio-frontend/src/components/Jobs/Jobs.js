@@ -1,12 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Add this import
 import "./Jobs.css";
 
+const JOBS_DATA = Array.from({ length: 32 }).map((_, i) => ({
+    id: i,
+    type: i % 2 === 0 ? "job" : "internship",
+    company: i % 2 === 0 ? "Google" : "Microsoft",
+    location: i % 2 === 0 ? "Hyderabad, India" : "Bangalore, India",
+    details: [
+        i % 2 === 0 ? "1+ years" : "Internship",
+        i % 2 === 0 ? "Hyderabad" : "Bangalore",
+        i % 2 === 0 ? "10-15 LPA" : "Stipend: 20k",
+        "BA/BTech"
+    ],
+    logo: "/assets/work-img.png",
+    bookmarked: false,
+}));
+
 function Jobs() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Add this line
     const [visible, setVisible] = useState(4);
     const [filter, setFilter] = useState("");
-    const [jobs, setJobs] = useState([]);
+    const [jobs, setJobs] = useState(JOBS_DATA);
     const [postedDate, setPostedDate] = useState("");
     const [status, setStatus] = useState("");
     const [ctc, setCtc] = useState("");
@@ -15,51 +30,13 @@ function Jobs() {
     const [location, setLocation] = useState("");
     const [country, setCountry] = useState("");
 
-    useEffect(()=>{
-        fetch("http://localhost:8080/api/jobs")
-        .then(res=>res.json())
-        .then(data=>{
-            const jobsWithBookmark=data.map(job=>({
-                ...job,
-                bookmarked: job.bookmarked==="true" || job.bookmarked===true
-            }));
-            setJobs(jobsWithBookmark);
-        })
-        .catch(err=>console.error("Failed to fetch jobs", err));
-    }, []);
-
-    // Filtering logic (includes all filters)
-    const filteredJobs = jobs.filter(job => {
-        // Text search filter
-        const matchesText =
+    // Filtering logic (simple search by company/location/type)
+    const filteredJobs = jobs.filter(
+        job =>
             job.company.toLowerCase().includes(filter.toLowerCase()) ||
             job.location.toLowerCase().includes(filter.toLowerCase()) ||
-            job.type.toLowerCase().includes(filter.toLowerCase());
-
-        // CTC filter
-        const matchesCtc = ctc === "" || (job.details && job.details.some(d => d.toLowerCase().includes(ctc.toLowerCase())));
-
-        // Experience filter
-        const matchesExperience = experience === "" || (job.details && job.details.some(d => d.toLowerCase().includes(experience.toLowerCase())));
-
-        // Qualification filter
-        const matchesQualification = qualification === "" || (job.details && job.details.some(d => d.toLowerCase().includes(qualification.toLowerCase())));
-
-        // State/location filter
-        const matchesLocation = location === "" || job.location.toLowerCase().includes(location.toLowerCase());
-
-        // Country filter
-        const matchesCountry = country === "" || job.location.toLowerCase().includes(country.toLowerCase());
-
-        return (
-            matchesText &&
-            matchesCtc &&
-            matchesExperience &&
-            matchesQualification &&
-            matchesLocation &&
-            matchesCountry
-        );
-    });
+            job.type.toLowerCase().includes(filter.toLowerCase())
+    );
 
     // Split jobs and internships
     const jobsList = filteredJobs.filter(j => j.type === "job");
@@ -85,6 +62,23 @@ function Jobs() {
             </button>
             <div className="jobs-filters">
                 <label>
+                    Posted Date:
+                    <select value={postedDate} onChange={e => setPostedDate(e.target.value)}>
+                        <option value="">Any</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </label>
+                <label>
+                    Status:
+                    <select value={status} onChange={e => setStatus(e.target.value)}>
+                        <option value="">All</option>
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </label>
+                <label>
                     CTC:
                     <input type="text" value={ctc} onChange={e => setCtc(e.target.value)} placeholder="e.g. 10-15 LPA"/>
                 </label>
@@ -97,7 +91,7 @@ function Jobs() {
                     <input type="text" value={qualification} onChange={e => setQualification(e.target.value)} placeholder="e.g. BTech"/>
                 </label>
                 <label>
-                    State:
+                    Location:
                     <input type="text" value={location} onChange={e => setLocation(e.target.value)} placeholder="e.g. Hyderabad"/>
                 </label>
                 <label>
@@ -112,7 +106,7 @@ function Jobs() {
                         value={filter}
                         onChange={e => setFilter(e.target.value)}
                     />
-                    <button className="search-btn">Type to Search</button>
+                    <button className="search-btn">→ Search</button>
                 </div>
             </div>
             <div className="jobs-content">
