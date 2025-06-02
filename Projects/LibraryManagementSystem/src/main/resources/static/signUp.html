@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="welcome-message">
+        <h1>Create Your Account</h1>
+        <h1>Library Management System</h1>
+        <blockquote>"Join us and unlock the door to endless learning opportunities."</blockquote>
+        <p><em>Website designed by: Saumya Raj</em></p>
+    </div>
+    <form id="signupForm" class="signup-form">
+        <div class="form-group">
+            <label for="email">Email Id</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-message" id="signupEmailError"></div>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            <div class="error-message" id="signupUsernameError"></div>
+        </div>
+        <div class="form-group password-container">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-message" id="signupPasswordError"></div>
+        </div>
+        <button type="submit">Signup</button>
+        <br>
+        <div class="linkLogIn">
+            <p>Already have an account? <a href="logIn.html" class="login-link">Log In</a></p>
+        </div>
+    </form>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

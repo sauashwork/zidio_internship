@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="welcome-message">
+        <h1>Welcome Back!</h1>
+        <h1>Library Management System</h1>
+        <blockquote>"Your gateway to knowledge awaits. Log in to explore!"</blockquote>
+        <p><em>Website designed by: Saumya Raj</em></p>
+    </div>
+    <form id="loginForm" class="login-form" action="/lms" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            <div class="error-message" id="loginUsernameError"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-message" id="loginPasswordError"></div>
+        </div>
+        <button type="submit">Login</button>
+        <br>
+        <div class="linkSignUp">
+            <p>Don't have an account? <a href="signUp.html" class="signup-link">Sign Up</a></p>
+            <p><a href="forgotPassword.html" class="forgot-password-link">Forgot Password?</a></p>
+        </div>
+    </form>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

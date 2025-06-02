@@ -1,0 +1,259 @@
+body {
+    background:
+        linear-gradient(to bottom, white 50%, black 50%), /* White top half, black bottom half */
+        url('https://images.pexels.com/photos/925743/pexels-photo-925743.jpeg?auto=compress&cs=tinysrgb&w=600') no-repeat center top; /* Background image */
+    background-size: cover; /* Cover the entire background */
+    backdrop-filter: blur(50px);
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0; /* Reset default margin */
+    height: 100vh; /* Use full viewport height */
+    display: flex; /* Center the container */
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    height: 90vh; /* Adjust for some padding */
+    width: 90vw; /* Responsive width */
+    border-radius: 30px; /* Rounded corners for the container */
+    overflow: hidden; /* Clip overflow */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+}
+
+.welcome-message {
+    flex: 1; /* Takes half of the container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px; /* Increased padding for a spacious feel */
+    height: 100%; /* Make sure it fills the height of the container */
+    background-image: url('https://images.pexels.com/photos/247899/pexels-photo-247899.jpeg?auto=compress&cs=tinysrgb&w=600'); /* Library-themed background */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the background */
+    background-repeat: no-repeat; /* Prevent repeating */
+    color: white; /* Text color */
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    font-size: 1.5rem; /* Adjusted for visibility */
+    text-align: center; /* Center align the text */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8); /* Enhanced shadow for depth */
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Light border for contrast */
+    backdrop-filter: blur(10px); /* Blur effect for a softer background */
+    margin: 20px; /* Margin around the message box */
+}
+
+.welcome-message h1 {
+    margin: 10px 0; /* Add spacing above and below headings */
+}
+
+.welcome-message blockquote {
+    font-size: 1.0rem; /* Size for the quote */
+    font-style: italic; /* Italic style for the quote */
+    margin: 15px 0; /* Spacing above and below the quote */
+}
+
+.welcome-message p {
+    font-size: 0.8rem; /* Size for the website credit */
+    margin-top: 10px; /* Space above the credit */
+}
+
+.login-form, .signup-form {
+    flex: 1; /* Takes the other half of the container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Add some padding */
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.9)), /* Dark overlay */
+                linear-gradient(to bottom right, #00ffcc, #ff0099); /* Neon gradient colors */
+    color: white;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    height: 100%; /* Fill the height of the container */
+}
+
+.form-group {
+    width: 100%; /* Ensure the form group takes full width */
+    margin: 10px 0; /* Space between fields */
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack label, input, and error message vertically */
+    align-items: center; /* Center items */
+}
+
+label {
+    display: block; /* Make label a block element */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+input {
+    width: 80%; /* Adjust to a percentage for better responsiveness */
+    padding: 10px 10px 10px 40px; /* Padding on the left for the icon */
+    margin: 10px 0; /* Space between fields */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background: rgba(255, 255, 255, 0.2) no-repeat 10px center; /* Semi-transparent background */
+    color: white; /* Text color */
+    font-size: 14px; /* Font size */
+}
+
+/* Email Input */
+input[type="email"] {
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 13.5l-6-5h12l-6 5zm0 1.5l6 5H6l6-5zm0-12C6.48 3 3 6.48 3 10.5S6.48 18 12 18s9-3.48 9-7.5S17.52 3 12 3z"%3E%3C/path%3E%3C/svg%3E'); /* Inline SVG for email */
+    background-size: 20px; /* Size of the icon */
+}
+
+/* Username Input */
+input[type="text"] {
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"%3E%3C/path%3E%3C/svg%3E'); /* Inline SVG icon */
+    background-size: 20px; /* Size of the icon */
+}
+
+/* Password Input */
+input[type="password"] {
+    background-image: url('https://img.icons8.com/ios-filled/50/ffffff/visible.png'); /* Inline SVG icon */
+    background-size: 20px; /* Size of the icon */
+}
+
+button {
+    padding: 10px 20px; /* Add padding for buttons */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background: #ff0099; /* Button color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background 0.3s; /* Smooth background transition */
+    width: 40%; /* Adjusted for better sizing */
+}
+
+button:hover {
+    background: #00ffcc; /* Change color on hover */
+}
+
+.linkSignUp, .linkLogIn {
+    margin-top: 20px; /* Space above the link */
+    text-align: center; /* Center the text */
+}
+
+.linkSignUp a, .linkLogIn a {
+    color: #00ffcc; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.error-message {
+    color: red; /* Error message color */
+}
+
+/* Forgot Password Page Styles */
+.forgot-password-message {
+    flex: 1; /* Takes half of the container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px; /* Increased padding for a spacious feel */
+    height: 100%; /* Make sure it fills the height of the container */
+    background-image: url('https://images.pexels.com/photos/247899/pexels-photo-247899.jpeg?auto=compress&cs=tinysrgb&w=600'); /* Library-themed background */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the background */
+    background-repeat: no-repeat; /* Prevent repeating */
+    color: white; /* Text color */
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    font-size: 1.5rem; /* Adjusted for visibility */
+    text-align: center; /* Center align the text */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8); /* Enhanced shadow for depth */
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Light border for contrast */
+    backdrop-filter: blur(10px); /* Blur effect for a softer background */
+    margin: 20px; /* Margin around the message box */
+}
+
+.forgot-password-message h1 {
+    margin: 10px 0; /* Add spacing above and below headings */
+}
+
+.forgot-password-message blockquote {
+    font-size: 1.0rem; /* Size for the quote */
+    font-style: italic; /* Italic style for the quote */
+    margin: 15px 0; /* Spacing above and below the quote */
+}
+
+.forgot-password-message p {
+    font-size: 0.8rem; /* Size for the website credit */
+    margin-top: 10px; /* Space above the credit */
+}
+
+.forgot-password-form {
+    flex: 1; /* Takes the other half of the container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Add some padding */
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.9)), /* Dark overlay */
+                linear-gradient(to bottom right, #00ffcc, #ff0099); /* Neon gradient colors */
+    color: white;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    height: 100%; /* Fill the height of the container */
+}
+
+.forgot-password-form input[type="email"] {
+    width: 80%; /* Adjust to a percentage for better responsiveness */
+    padding: 10px 10px 10px 40px; /* Padding on the left for the icon */
+    margin: 10px 0; /* Space between fields */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background: rgba(255, 255, 255, 0.2) no-repeat 10px center; /* Semi-transparent background */
+    color: white; /* Text color */
+    font-size: 14px; /* Font size */
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"%3E%3Cpath d="M12 13.5l-6-5h12l-6 5zm0 1.5l6 5H6l6-5zm0-12C6.48 3 3 6.48 3 10.5S6.48 18 12 18s9-3.48 9-7.5S17.52 3 12 3z"%3E%3C/path%3E%3C/svg%3E'); /* Inline SVG for email */
+    background-size: 20px; /* Size of the icon */
+}
+
+.forgot-password-form button {
+    padding: 10px 20px; /* Add padding for buttons */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background: #ff0099; /* Button color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background 0.3s; /* Smooth background transition */
+    width: 40%; /* Adjusted for better sizing */
+}
+
+.forgot-password-form button:hover {
+    background: #00ffcc; /* Change color on hover */
+}
+
+.linkBackToLogin {
+    margin-top: 20px; /* Space above the link */
+    text-align: center; /* Center the text */
+}
+
+.linkBackToLogin a {
+    color: #00ffcc; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack on smaller screens */
+        height: auto; /* Allow for flexibility */
+    }
+
+    .welcome-message, .login-form, .signup-form {
+        height: auto; /* Allow for flexibility */
+        border-radius: 0; /* Remove rounded corners for mobile */
+    }
+
+    button {
+        width: 80%; /* Increase button size for better touch */
+    }
+}
