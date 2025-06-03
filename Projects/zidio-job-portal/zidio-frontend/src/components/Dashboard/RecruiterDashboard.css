@@ -336,10 +336,10 @@
         /* border-radius removed */
 
         .logout-btn {
-            background: #ff4d4f;
+            /* background: #ff4d4f; */
             color: #fff;
-            border: none;
-            border-radius: 6px;
+            /* border: none; */
+            /* border-radius: 6px; */
             padding: 8px 20px;
             font-size: 15px;
             font-weight: 600;
@@ -350,6 +350,7 @@
 
         .logout-btn:hover {
             background: #d9363e;
+             color:#ffbd20;
         }
 
         .profile {
@@ -695,14 +696,20 @@
     }
 
     /* Style for the "Post a Job?" button */
+    .post-jobs{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
     .studUp .post-jobs button {
         background: #ffbd20;
         color: #222;
         border: none;
         border-radius: 8px;
-        padding: 10px 28px;
-        font-size: 17px;
-        font-weight: 700;
+        padding: 5px 20px;
+        font-size: 14px;
+        font-weight: 600;
         cursor: pointer;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         transition: background 0.2s, color 0.2s;

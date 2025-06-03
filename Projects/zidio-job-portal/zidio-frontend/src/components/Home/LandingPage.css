@@ -34,7 +34,15 @@
         a {
             text-decoration: none;
             color: #B0B0B0;
+
+            &:hover{
+                color: #FFBD20;
+            }
         }
+
+        
+
+       
     }
 
     .user-info {
@@ -121,6 +129,10 @@
                 border-radius: 8px;
                 border: none;
                 cursor: pointer;
+
+                &:hover{
+                    background: white;
+                }
             }
         }
     }
@@ -497,6 +509,12 @@
             border: none;
             padding: 18px;
             color: white;
+
+            &:hover{
+                background: white;
+                color: black;
+                cursor: pointer;
+            }
         }
     }
 }
@@ -833,8 +851,8 @@ footer {
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-    background: #fee3a3;
-    color: #232323;
+    /* background: #fee3a3; */
+    color: blue;
 }
 
 .dropdown-divider {

@@ -167,7 +167,7 @@
 /* Individual Block */
 .jobs-cards-block {
     flex: 1;
-    padding: 12px;
+    padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     min-height: 340px; /* Adjust as needed for your layout */

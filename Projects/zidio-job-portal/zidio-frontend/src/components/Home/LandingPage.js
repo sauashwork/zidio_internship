@@ -1,6 +1,6 @@
 import './LandingPage.css'
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 function LandingPage() {
 
@@ -19,6 +19,13 @@ function LandingPage() {
     });
     const [user, setUser] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const location = useLocation();
+
+    // Restore user from localStorage on mount and on route change
+    useEffect(() => {
+        const stored = localStorage.getItem("zidio_profile");
+        setUser(stored ? JSON.parse(stored) : null);
+    }, [location]);
 
     const handleUserIconClick = () => {
         setDropdownOpen((prev) => !prev);
@@ -27,6 +34,7 @@ function LandingPage() {
     const handleLogout = () => {
         setUser(null);
         setDropdownOpen(false);
+        localStorage.removeItem("zidio_profile"); // <-- This line ensures user is removed from storage
     };
 
     const getDropdownItems = () => {
@@ -35,16 +43,16 @@ function LandingPage() {
         }
         switch (user.role) {
             case 'Student':
-                return[
-                    {label: 'Dashboard', link: '/dashboard/student'},
+                return [
+                    { label: 'Dashboard', link: '/dashboard/student' },
                 ];
             case 'Recruiter':
-                return[
-                    {label: 'Dashboard', link: 'dashboard/recruiter'},
+                return [
+                    { label: 'Dashboard', link: 'dashboard/recruiter' },
                 ];
             case 'Admin':
-                return[
-                    {label: 'Dashboard', link: 'dashboard/admin'},
+                return [
+                    { label: 'Dashboard', link: 'dashboard/admin' },
                 ];
             default:
                 return [];
@@ -109,7 +117,14 @@ function LandingPage() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setUser({ fullName: data.fullName, role: data.role });
+                // Save all relevant fields
+                const userObj = { 
+                    fullName: data.fullName, 
+                    role: data.role, 
+                    email: data.email // this is good!
+                };
+                setUser(userObj);
+                localStorage.setItem("zidio_profile", JSON.stringify(userObj));
                 setShowLogin(false);
                 setLoginData({ email: '', password: '' });
                 alert("Login successful!");
@@ -136,6 +151,25 @@ function LandingPage() {
         setShowSignup(false);
     };
 
+    // Add this helper function
+    const requireLogin = (e) => {
+        if (!user) {
+            e.preventDefault();
+            alert("Please login first!");
+            return false;
+        }
+        return true;
+    };
+
+    //user says
+    const [testimonials, setTestimonials]=useState([]);
+    useEffect(()=>{
+        fetch("http://localhost:8080/api/userSays")
+        .then(res=>res.json())
+        .then(data=>setTestimonials(data))
+        .catch(()=>setTestimonials([]));
+    },[]);
+
     return (
         <div className='landingPage'>
             <header>
@@ -143,12 +177,35 @@ function LandingPage() {
                     <div className='brandName'>Zidio Development</div>
                     <div>
                         <ul className='navItems'>
-                            <li><a href='/'>Home</a></li>
-                            <li><a href='#trust'>About Us</a></li>
                             <li>
-                                <Link to="/jobs" id='jobs-link'>Jobs</Link>
+                                <Link
+                                    to="/"
+                                    style={user ? {} : { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' }}
+                                    onClick={e => !requireLogin(e) && false}
+                                >Home</Link>
                             </li>
-                            <li><a href='#newsletter'>Contact</a></li>
+                            <li>
+                                <a
+                                    href='#trust'
+                                    onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}
+                                >About Us</a>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/jobs"
+                                    id='jobs-link'
+                                    onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}
+                                >Jobs</Link>
+                            </li>
+                            <li>
+                                <a
+                                    href='#newsletter'
+                                    onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}
+                                >Contact</a>
+                            </li>
                         </ul>
                     </div>
                     <div>
@@ -183,9 +240,18 @@ function LandingPage() {
                         <h1>Find your <span>dream job</span> with us</h1>
                         <p>Good life begins with a good company. Start explore thousands of jobs in one place.</p>
                         <div className='searchFields'>
-                            <input type='text' placeholder='Job Title'></input>
-                            <input type='text' placeholder='Job Type'></input>
-                            <button>🔍</button>
+                            <input type='text' placeholder='Job Title' disabled={!user} />
+                            <input type='text' placeholder='Job Type' disabled={!user} />
+                            <button
+                                onClick={e => {
+                                    if (!user) {
+                                        e.preventDefault();
+                                        alert("Please login first!");
+                                    }
+                                }}
+                                disabled={!user}
+                                style={!user ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
+                            >→ Search</button>
                         </div>
                     </div>
                     <div className='welcomeImage'>
@@ -334,54 +400,24 @@ function LandingPage() {
                         <h2>What <span>User</span> says about us?</h2>
                     </div>
                     <div className='userDown'>
-                        <div className='userCard'>
-                            <div className='cardUp'>
-                                <img src='./assets/work-img.png' alt='user card'></img>
-                                <div>
-                                    <h3>Guguloth Ashok</h3>
-                                    <p>⭐⭐⭐⭐⭐</p>
+                        {testimonials.length === 0 ? (
+                            <div>No testimonials yet.</div>
+                        ) : (
+                            testimonials.map((t, idx) => (
+                                <div className='userCard' key={t.id || idx}>
+                                    <div className='cardUp'>
+                                        <img src={t.photo || './assets/work-img.png'} alt='user card' />
+                                        <div>
+                                            <h3>{t.name}</h3>
+                                            <p>{"⭐".repeat(t.rating || 5)}</p>
+                                        </div>
+                                    </div>
+                                    <div className='cardDown'>
+                                        <p>{t.message}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='cardDown'>
-                                <p>This job portal made job search easy and quick Recommended to all job seekers!</p>
-                            </div>
-                        </div>
-                        <div className='userCard'>
-                            <div className='cardUp'>
-                                <img src='./assets/work-img.png' alt='user card'></img>
-                                <div>
-                                    <h3>Guguloth Ashok</h3>
-                                    <p>⭐⭐⭐⭐⭐</p>
-                                </div>
-                            </div>
-                            <div className='cardDown'>
-                                <p>This job portal made job search easy and quick Recommended to all job seekers!</p>
-                            </div>
-                        </div>
-                        <div className='userCard'>
-                            <div className='cardUp'>
-                                <img src='./assets/work-img.png' alt='user card'></img>
-                                <div>
-                                    <h3>Guguloth Ashok</h3>
-                                    <p>⭐⭐⭐⭐⭐</p>
-                                </div>
-                            </div>
-                            <div className='cardDown'>
-                                <p>This job portal made job search easy and quick Recommended to all job seekers!</p>
-                            </div>
-                        </div>
-                        <div className='userCard'>
-                            <div className='cardUp'>
-                                <img src='./assets/work-img.png' alt='user card'></img>
-                                <div>
-                                    <h3>Guguloth Ashok</h3>
-                                    <p>⭐⭐⭐⭐⭐</p>
-                                </div>
-                            </div>
-                            <div className='cardDown'>
-                                <p>This job portal made job search easy and quick Recommended to all job seekers!</p>
-                            </div>
-                        </div>
+                            ))
+                        )}
                     </div>
                 </div>
                 <div className='newsletter' id='newsletter'>
@@ -390,10 +426,19 @@ function LandingPage() {
                     </div>
                     <div className='newsDown'>
                         <div>
-                            <input type='email' placeholder='Your@email.com'></input>
+                            <input type='email' placeholder='Your@email.com' disabled={!user} />
                         </div>
                         <div>
-                            <button>Subscribe</button>
+                            <button
+                                onClick={e => {
+                                    if (!user) {
+                                        e.preventDefault();
+                                        alert("Please login first!");
+                                    }
+                                }}
+                                disabled={!user}
+                                style={!user ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
+                            >Subscribe</button>
                         </div>
                     </div>
                 </div>
@@ -405,35 +450,55 @@ function LandingPage() {
                         <p>Job portal with user profiles, skill updates, certifications, work experience and </p>
                         <div className='socialMedia'>
                             <div>
-                                <img src='https://cdn-icons-png.flaticon.com/512/4922/4922972.png' alt='instagram'></img>
-                                <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYIf4qwAVMeAZHL7QYa9s4aOEEiPVYha2HTQ&s' alt='twitter'></img>
-                                <img src='https://img.icons8.com/ios_filled/512/telegram.png' alt='telegram'></img>
+                                <img src='https://cdn-icons-png.flaticon.com/512/4922/4922972.png' alt='instagram' onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}></img>
+                                <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYIf4qwAVMeAZHL7QYa9s4aOEEiPVYha2HTQ&s' alt='twitter' onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}></img>
+                                <img src='https://img.icons8.com/ios_filled/512/telegram.png' alt='telegram' onClick={e => !requireLogin(e) && false}
+                                    style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}></img>
                             </div>
                         </div>
                     </div>
                     <div className='roles-footer'>
                         <h3>Student</h3>
-                        <p>Search Jobs</p>
-                        <p>Saved Jobs</p>
-                        <p>Applied Jobs</p>
-                        <p>Profile Management</p>
-                        <p>Courses</p>
+                        <p
+                            onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}
+                        >Search Jobs</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Saved Jobs</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Applied Jobs</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Profile Management</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Courses</p>
                     </div>
                     <div className='roles-footer'>
                         <h3>Recruiter</h3>
-                        <p>Post a Job</p>
-                        <p>Post an Internship</p>
-                        <p>Profile Management</p>
-                        <p>Manage Jobs</p>
-                        <p>Manage Internships</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Post a Job</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Post an Internship</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Profile Management</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Manage Jobs</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Manage Internships</p>
                     </div>
                     <div className='roles-footer'>
                         <h3>Admin</h3>
-                        <p>Profile Management</p>
-                        <p>User Management</p>
-                        <p>Content Moderation</p>
-                        <p>System Analytics</p>
-                        <p>System Settings</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Profile Management</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>User Management</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>Content Moderation</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>System Analytics</p>
+                        <p onClick={e => !requireLogin(e) && false}
+                            style={!user ? { pointerEvents: 'auto', opacity: 0.6, cursor: 'not-allowed' } : {}}>System Settings</p>
                     </div>
                 </div>
                 <div className='footerDown'>

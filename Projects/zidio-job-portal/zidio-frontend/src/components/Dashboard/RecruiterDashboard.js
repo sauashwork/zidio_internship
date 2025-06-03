@@ -5,13 +5,19 @@ import { useNavigate } from "react-router-dom";
 function RecruiterDashboard() {
     const [savedVisible, setSavedVisible] = useState(4);
     const [appliedVisible, setAppliedVisible] = useState(4);
-    const [profile, setProfile] = useState({
-        fullName: "Full Name",
-        role: "Recruiter",
-        img: "/assets/work-img.png",
-    });
+    const initialProfile = (() => {
+        const stored = localStorage.getItem("zidio_profile");
+        return stored
+            ? JSON.parse(stored)
+            : {
+                fullName: "Full Name",
+                role: "Recruiter",
+                img: "/assets/work-img.png",
+            };
+    })();
+    const [profile, setProfile] = useState(initialProfile);
+    const [profileInput, setProfileInput] = useState(initialProfile);
     const [editMode, setEditMode] = useState(false);
-    const [profileInput, setProfileInput] = useState(profile);
     const [showPostForm, setShowPostForm] = useState(false);
     const [postType, setPostType] = useState("job");
     const [jobForm, setJobForm] = useState({
@@ -46,7 +52,11 @@ function RecruiterDashboard() {
 
     useEffect(() => {
         const stored = localStorage.getItem("zidio_profile");
-        if (stored) setProfile(JSON.parse(stored));
+        if (stored) {
+            const user = JSON.parse(stored);
+            setProfile(user);
+            setProfileInput(user); // keep profileInput in sync
+        }
         const storedBio = localStorage.getItem("zidio_bio");
         if (storedBio) setBio(storedBio);
         const storedApps = localStorage.getItem("zidio_applications");
@@ -85,13 +95,18 @@ function RecruiterDashboard() {
     };
 
     const handleSaveProfile = () => {
-        setProfile(profileInput);
+        // Merge updated fields with existing user object (preserve email, id, etc.)
+        const stored = localStorage.getItem("zidio_profile");
+        let user = stored ? JSON.parse(stored) : {};
+        const updatedUser = {
+            ...user,
+            fullName: profileInput.fullName,
+            role: profileInput.role,
+            img: profileInput.img,
+        };
+        setProfile(updatedUser);
+        localStorage.setItem("zidio_profile", JSON.stringify(updatedUser));
         setEditMode(false);
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem("zidio_profile");
-        navigate("/");
     };
 
     // Post a Job/Internship logic
@@ -277,7 +292,10 @@ function RecruiterDashboard() {
         <div className="studentDash">
 
             <div className="studDown">
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                <button
+                    className="home-btn"
+                    onClick={() => navigate("/")}
+                >← Home</button>
                 <div className="profile">
                     <label htmlFor="profile-pic-upload" style={{ cursor: editMode ? "pointer" : "default" }}>
                         <img
@@ -495,8 +513,9 @@ function RecruiterDashboard() {
                                         </ul>
                                     </div>
                                     <div className="c3">
-                                        <img src={job.logo} alt="company logo" />
+                                        {/* <img src={job.logo} alt="company logo" /> */}
                                         <button onClick={() => handleViewApplications(job.id)}>View Applications</button>
+
                                     </div>
                                 </div>
                             ))}
@@ -533,7 +552,7 @@ function RecruiterDashboard() {
                                         </ul>
                                     </div>
                                     <div className="c3">
-                                        <img src={job.logo} alt="company logo" />
+                                        {/* <img src={job.logo} alt="company logo" /> */}
                                         <button onClick={() => handleViewApplications(job.id)}>View Applications</button>
                                     </div>
                                 </div>

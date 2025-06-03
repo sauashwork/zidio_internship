@@ -4,13 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
     // Admin profile
-    const [profile, setProfile] = useState({
-        fullName: "Full Name",
-        role: "Admin",
-        img: "/assets/work-img.png",
-    });
+    const initialProfile = (() => {
+        const stored = localStorage.getItem("zidio_admin_profile");
+        return stored
+            ? JSON.parse(stored)
+            : {
+                fullName: "Full Name",
+                role: "Admin",
+                img: "/assets/work-img.png",
+            };
+    })();
+
+    const [profile, setProfile] = useState(initialProfile);
     const [editMode, setEditMode] = useState(false);
-    const [profileInput, setProfileInput] = useState(profile);
+    const [profileInput, setProfileInput] = useState(initialProfile);
     const [bio, setBio] = useState("");
     const [bioEdit, setBioEdit] = useState(false);
 
@@ -55,7 +62,11 @@ function AdminDashboard() {
 
     useEffect(() => {
         const stored = localStorage.getItem("zidio_admin_profile");
-        if (stored) setProfile(JSON.parse(stored));
+        if (stored) {
+            const user = JSON.parse(stored);
+            setProfile(user);
+            setProfileInput(user); // keep profileInput in sync
+        }
         const storedBio = localStorage.getItem("zidio_admin_bio");
         if (storedBio) setBio(storedBio);
     }, []);
@@ -81,7 +92,16 @@ function AdminDashboard() {
     };
 
     const handleSaveProfile = () => {
-        setProfile(profileInput);
+        const stored=localStorage.getItem("zidio_admin_profile");
+        let user=stored?JSON.parse(stored):{};
+        const updatedUser={
+            ...user,
+            fullName:profileInput.fullName,
+            role: profileInput.role,
+            img: profileInput.img,
+        };
+        setProfile(updatedUser);
+        localStorage.setItem("zidio_admin_profile", JSON.stringify(updatedUser));
         setEditMode(false);
     };
 
@@ -121,7 +141,7 @@ function AdminDashboard() {
     return (
         <div className="studentDash adminDash">
             <div className="studDown adminLeft">
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                <button className="home-btn" onClick={()=>navigate("/")}>← Home</button>
                 <div className="profile">
                     <label htmlFor="profile-pic-upload" style={{ cursor: editMode ? "pointer" : "default" }}>
                         <img

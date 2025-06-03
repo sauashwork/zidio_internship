@@ -29,12 +29,16 @@ function StudentDashboard() {
     
     useEffect(() => {
         const stored = localStorage.getItem("zidio_profile");
-        if (stored) setProfile(JSON.parse(stored));
+        if (stored) {
+            const user = JSON.parse(stored);
+            setProfile(user);
+            setProfileInput(user); // keep profileInput in sync
+        }
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("zidio_profile", JSON.stringify(profile));
-    }, [profile]);
+    // useEffect(() => {
+    //     localStorage.setItem("zidio_profile", JSON.stringify(profile));
+    // }, [profile]);
 
     const handleProfilePic = (e) => {
         const file = e.target.files[0];
@@ -48,7 +52,18 @@ function StudentDashboard() {
     };
 
     const handleSaveProfile = () => {
-        setProfile(profileInput);
+        // Get the current user object from localStorage
+        const stored = localStorage.getItem("zidio_profile");
+        let user = stored ? JSON.parse(stored) : {};
+        // Merge updated fields (preserve all other fields, like email)
+        const updatedUser = {
+            ...user,
+            fullName: profileInput.fullName,
+            role: profileInput.role,
+            img: profileInput.img,
+        };
+        setProfile(updatedUser);
+        localStorage.setItem("zidio_profile", JSON.stringify(updatedUser));
         setEditMode(false);
     };
 
@@ -216,7 +231,10 @@ function StudentDashboard() {
                 </div>
             </div>
             <div className="studDown">
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                <button
+        className="home-btn"
+        onClick={() => navigate("/")}
+    >← Home</button>
                 <div className="profile">
                     <label htmlFor="profile-pic-upload" style={{ cursor: editMode ? "pointer" : "default" }}>
                         <img

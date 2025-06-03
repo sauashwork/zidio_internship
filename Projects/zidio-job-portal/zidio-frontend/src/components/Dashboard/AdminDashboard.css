@@ -55,7 +55,7 @@
 
 /* Sidebar/Profile */
 .logout-btn {
-    background: var(--danger);
+    /* background: var(--danger); */
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -68,7 +68,8 @@
 }
 
 .logout-btn:hover {
-    background: #c62828;
+    /* background: #c62828; */
+    color:#ffbd20;
 }
 
 .profile {
