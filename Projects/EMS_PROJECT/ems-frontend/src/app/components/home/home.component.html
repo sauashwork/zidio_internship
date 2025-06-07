@@ -1,0 +1,146 @@
+<nav class="navbar">
+  <div class="navbar-title">EMS</div>
+  <div class="navbar-links">
+    <!-- <a routerLink="/" routerLinkActive="active">Home</a>
+    <a routerLink="/employees" routerLinkActive="active">Employees</a>
+    <a routerLink="/employees/add" routerLinkActive="active">Add Employee</a> -->
+    <ng-container *ngIf="isLoggedIn(); else loggedOut">
+      <div class="user-dropdown">
+        <span class="user-info">
+          <i class="fa fa-user"></i> user: {{ getUsername() }}
+        </span>
+        <div class="dropdown-content">
+          <a (click)="logout()">Logout</a>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #loggedOut>
+      <a class="nav-btn" routerLink="/login">Login</a>
+      <a class="nav-btn" routerLink="/signup">Signup</a>
+    </ng-template>
+  </div>
+</nav>
+
+<div class="landing-container">
+  <div class="overlay"></div>
+  <div class="landing-content">
+    <h1>Employee Management System</h1>
+    <p>Welcome! Choose an option below to manage your employees.</p>
+    <div class="options">
+      <a routerLink="/employees" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>View Employees</h2>
+        <p>Browse and search all employees.</p>
+      </a>
+      <a routerLink="/employees/add" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Add Employee</h2>
+        <p>Add a new employee to the system.</p>
+      </a>
+      <!-- <a routerLink="/employees/edit" class="option-card">
+        <h2>Edit Employee</h2>
+        <p>Update employee details.</p>
+      </a> -->
+      <!-- <a routerLink="/employees/delete" class="option-card">
+        <h2>Delete Employee</h2>
+        <p>Remove an employee from the system.</p>
+      </a> -->
+      <a routerLink="/departments" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Departments</h2>
+        <p>View and manage departments.</p>
+      </a>
+      <a routerLink="/attendance" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Attendance</h2>
+        <p>Track employee attendance records.</p>
+      </a>
+      <a routerLink="/leaves" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Leaves</h2>
+        <p>Manage leave requests and approvals.</p>
+      </a>
+      <a routerLink="/payroll" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Payroll</h2>
+        <p>View and process payroll information.</p>
+      </a>
+      <a routerLink="/reports" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Reports</h2>
+        <p>Generate and download reports.</p>
+      </a>
+      <a routerLink="/settings" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Settings</h2>
+        <p>Configure system preferences.</p>
+      </a>
+      <!-- <a routerLink="/profile" class="option-card">
+        <h2>My Profile</h2>
+        <p>View and edit your profile.</p>
+      </a> -->
+      <a routerLink="/roles" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Roles & Permissions</h2>
+        <p>Manage user roles and permissions.</p>
+      </a>
+      <a routerLink="/notifications" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Notifications</h2>
+        <p>View system notifications and alerts.</p>
+      </a>
+      <a routerLink="/documents" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Documents</h2>
+        <p>Manage employee documents and files.</p>
+      </a>
+      <a routerLink="/training" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Training</h2>
+        <p>Assign and track employee training.</p>
+      </a>
+      <a routerLink="/appraisals" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Appraisals</h2>
+        <p>Conduct and review employee appraisals.</p>
+      </a>
+      <a routerLink="/holidays" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Holidays</h2>
+        <p>View and manage holiday calendar.</p>
+      </a>
+      <a routerLink="/shifts" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Shifts</h2>
+        <p>Manage employee shift schedules.</p>
+      </a>
+      <a routerLink="/announcements" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Announcements</h2>
+        <p>Post and view company announcements.</p>
+      </a>
+      <a routerLink="/support" class="option-card" [class.disabled]="!isLoggedIn()"
+        [attr.tabindex]="isLoggedIn() ? 0 : -1" (click)="preventIfNotLoggedIn($event)"
+        title="You must be logged in to access this feature">
+        <h2>Support</h2>
+        <p>Contact support or raise a ticket.</p>
+      </a>
+    </div>
+  </div>
+</div>

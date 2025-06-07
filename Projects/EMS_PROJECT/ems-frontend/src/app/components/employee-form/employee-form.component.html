@@ -1,0 +1,49 @@
+<h2>{{ isEditMode ? 'Edit' : 'Add' }} Employee</h2>
+<form (ngSubmit)="onSubmit()" #empForm="ngForm">
+  <div class="form-row">
+    <label>Name:
+      <input name="name" [(ngModel)]="employee.name" required />
+    </label>
+    <label>Email:
+      <input name="email" [(ngModel)]="employee.email" required type="email" />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>Phone:
+      <input name="phone" [(ngModel)]="employee.phone" required />
+    </label>
+    <label>Department:
+      <input name="department" [(ngModel)]="employee.department" required />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>Designation:
+      <input name="designation" [(ngModel)]="employee.designation" required />
+    </label>
+    <label>Salary:
+      <input name="salary" [(ngModel)]="employee.salary" required type="number" />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>Address:
+      <input name="address" [(ngModel)]="employee.address" required />
+    </label>
+    <label>Gender:
+      <select name="gender" [(ngModel)]="employee.gender" required>
+        <option value="">Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+  </div>
+  <div class="form-row">
+    <label>Date of Joining:
+      <input name="dateOfJoining" [(ngModel)]="employee.dateOfJoining" required type="date" />
+    </label>
+  </div>
+  <div class="form-actions">
+    <button type="submit">{{ isEditMode ? 'Update' : 'Add' }}</button>
+    <button type="button" (click)="cancel()">Cancel</button>
+  </div>
+</form>

@@ -1,0 +1,53 @@
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-family: Arial, sans-serif;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  tr:hover {
+    background-color: #f1f7ff;
+  }
+}
+
+.edit-btn, .delete-btn {
+  padding: 4px 12px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.edit-btn {
+  background-color: #1976d2;
+  color: #fff;
+
+  &:hover {
+    background-color: #1565c0;
+  }
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: #fff;
+
+  &:hover {
+    background-color: #b71c1c;
+  }
+}
