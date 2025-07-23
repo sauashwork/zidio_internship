@@ -1,0 +1,515 @@
+/* Modern dashboard color palette inspired by your screenshot */
+:root {
+    --sidebar-bg: #232a34;
+    --sidebar-accent: #2e3744;
+    --sidebar-text: #fff;
+    --sidebar-active: #4fc3f7;
+    --main-bg: #f6f8fa;
+    --card-bg: #fff;
+    --card-shadow: 0 2px 16px rgba(30,58,92,0.08);
+    --primary: #4fc3f7;
+    --primary-dark: #0288d1;
+    --success: #22b573;
+    --danger: #ff4d4f;
+    --warning: #ffbd20;
+    --text-main: #232a34;
+    --text-muted: #7b8a99;
+    --analytics-bg: #232a34;
+    --analytics-accent: #4fc3f7;
+}
+
+/* Layout backgrounds */
+.studentDash.adminDash {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--main-bg);
+}
+
+.studDown.adminLeft {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 260px;
+    max-width: 380px; /* Increased from 320px */
+    background: var(--sidebar-bg);
+    padding: 32px 18px 32px 18px; /* Add padding on both sides */
+    /* border-top-right-radius: 32px; */
+    /* border-bottom-right-radius: 32px; */
+    box-shadow: 2px 0 16px 0 rgba(30,58,92,0.06);
+}
+
+.studUp.adminRight {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background: var(--main-bg);
+    padding: 32px 32px 32px 32px;
+    border-top-left-radius: 32px;
+    border-bottom-left-radius: 32px;
+}
+
+/* Sidebar/Profile */
+.logout-btn {
+    /* background: var(--danger); */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.logout-btn:hover {
+    /* background: #c62828; */
+    color:#ffbd20;
+}
+
+.profile {
+    background: var(--sidebar-accent);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 18px 18px 12px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%; /* Full width */
+    width: 100%; /* Full width */
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+    margin-bottom: 8px;
+    background: #fff;
+}
+
+.profile-input {
+    width: 90%;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--sidebar-active);
+    font-size: 15px;
+    background: #fff;
+    color: var(--text-main);
+}
+
+.profile-info-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.edit-btn, .save-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.2s;
+}
+
+.edit-btn:hover, .save-btn:hover {
+    background: var(--primary-dark);
+    color: #fff;
+}
+
+.Bio, .notifications {
+    background: var(--sidebar-accent);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 16px 18px 12px 18px;
+    margin-bottom: 0;
+    color: var(--sidebar-text);
+    max-width: 100%; /* Full width */
+    width: 100%; /* Full width */
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.Bio h4, .notifications h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--sidebar-active);
+    font-weight: 700;
+}
+
+/* Main content */
+.welcome-message {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 18px 24px;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.welcome-message .message {
+    font-size: 22px;
+    font-weight: 700;
+    color: #232a34 !important; /* Black/dark for strong contrast */
+    letter-spacing: 0.5px;
+}
+
+.welcome-message .today {
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.welcome-banner {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+    background: var(--primary);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0;
+    min-height: 140px; /* Increased height */
+}
+
+.bannerUp {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 32px 32px; /* More padding for height */
+    gap: 18px;
+}
+
+.wel-banner h3 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.wel-banner p {
+    margin: 0;
+    font-size: 15px;
+    color: #e3f6fc;
+}
+
+.bannerDown {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e3f6fc;
+}
+
+.bannerDown img {
+    width: 110px;
+    object-fit: cover;
+
+}
+
+.adminSection {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 24px 20px 18px 20px;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.adminSection .adminTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #f7f7f7;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.adminTable th, .adminTable td {
+    padding: 14px 8px;
+    text-align: center;
+    font-size: 15px;
+    width: 25%; /* Spread columns equally */
+}
+
+.adminTable th {
+    background: #e3f6fc;
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.adminTable tr {
+    height: 56px;
+}
+
+.adminTable tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+.adminTable tr:nth-child(odd) {
+    background: #fff;
+}
+
+.status-active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-blocked {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.block-btn, .approve-btn {
+    width: 100%;
+    min-width: 90px;
+    max-width: 120px;
+    background: var(--warning);
+    color: var(--text-main);
+    border: none;
+    border-radius: 6px;
+    padding: 7px 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+    text-align: center;
+}
+
+.block-btn:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+.approve-btn:hover {
+    background: var(--success);
+    color: #fff;
+}
+
+.reportsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.reportsList li {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 14px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 15px;
+    min-height: 54px;
+}
+
+.reportsList li.resolved {
+    background: #e6ffe6;
+    color: var(--success);
+}
+
+.report-status {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.resolve-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.2s;
+    min-width: 90px;
+    max-width: 120px;
+    text-align: center;
+}
+
+.resolve-btn:hover {
+    background: var(--success);
+    color: #fff;
+}
+
+.analytics {
+    background: var(--analytics-bg);
+    color: #fff;
+}
+
+.analytics h3 {
+    color: #fff;
+}
+
+.analyticsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+    margin-top: 10px;
+}
+
+.analyticsGrid > div {
+    background: #fff;
+    color: var(--analytics-bg);
+    border-radius: 8px;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(30,58,92,0.06);
+}
+
+.analyticsNum {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--analytics-accent);
+    margin-bottom: 2px;
+}
+
+.settingsRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    transition: .4s;
+}
+
+.switch input:checked + .slider {
+    background-color: var(--primary);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.adminRow {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.half-width {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.userManagementRow {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+}
+
+.userCard {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 18px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.userCard h4 {
+    margin: 0 0 10px 0;
+    font-size: 17px;
+    color: var(--primary-dark);
+    font-weight: 700;
+    text-align: center;
+}
+
+.userCard .adminTable th, .userCard .adminTable td {
+    width: 33.33%;
+}
+
+@media (max-width: 900px) {
+    .studentDash.adminDash {
+        flex-direction: column;
+        gap: 18px;
+        padding: 0;
+    }
+    .studDown.adminLeft, .studUp.adminRight {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        border-radius: 0;
+        padding: 18px 4vw;
+    }
+    .adminRow {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .half-width {
+        width: 100%;
+        min-width: 0;
+    }
+    .userManagementRow {
+        flex-direction: column;
+        gap: 18px;
+    }
+}

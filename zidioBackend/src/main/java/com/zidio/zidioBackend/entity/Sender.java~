@@ -1,0 +1,4 @@
+package com.zidio.zidioBackend.entity;
+
+public class Sender {
+}

@@ -1,0 +1,52 @@
+package com.zidio.zidioBackend.service;
+
+
+import com.zidio.zidioBackend.controller.BookmarkController;
+import com.zidio.zidioBackend.entity.Bookmark;
+import com.zidio.zidioBackend.entity.Job;
+import com.zidio.zidioBackend.repository.BookmarkRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class BookmarkService {
+
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
+    @Autowired
+    private JobService jobService;
+
+    public ResponseEntity<Bookmark> getBookmarkByJobIdAndStudentId(Long jobId, Long studentId) {
+        if(jobId == null || studentId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return new BookmarkController().getBookmarkByJobIdStudentId(jobId, studentId);
+    }
+
+    public ResponseEntity<Bookmark> createBookmark(Long jobId, Long studentId) {
+        if(jobId == null || studentId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return new BookmarkController().createBookmark(jobId, studentId);
+    }
+
+    public ResponseEntity<List<Job>> getAllBookmarksByStudentId(Long studentId) {
+        if (studentId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        List<Long> jobIds = Arrays.asList(bookmarkRepository.findByStudentId(studentId)).stream()
+                .map(Bookmark::getJobId)
+                .collect(Collectors.toList());
+
+        List<Job> jobs= jobService.getJobsByIds(jobIds);
+        return ResponseEntity.ok(jobs);
+    }
+}
