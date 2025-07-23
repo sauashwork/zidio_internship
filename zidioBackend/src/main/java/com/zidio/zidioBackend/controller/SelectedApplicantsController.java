@@ -4,9 +4,7 @@ package com.zidio.zidioBackend.controller;
 import com.zidio.zidioBackend.entity.SelectedApplicants;
 import com.zidio.zidioBackend.repository.SelectedApplicantsRepository;
 import com.zidio.zidioBackend.service.SelectedApplicantsService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
